@@ -1,7 +1,7 @@
 # 🚀 VyapaarSaathi AI – Intelligent Business Intelligence Platform
 
 [![Frontend](https://img.shields.io/badge/Frontend-Live-blue?style=flat-square&logo=vercel)](https://vyapaar-saathi-ai.vercel.app)
-[![Backend](https://img.shields.io/badge/Backend-API-green?style=flat-square&logo=fastapi)](http://vyapaar-saathi-ai.vercel.app/health)
+[![Backend](https://img.shields.io/badge/Backend-API-green?style=flat-square&logo=fastapi)](http://localhost:8000/health)
 [![License](https://img.shields.io/badge/License-Internal-lightgrey?style=flat-square)](#)
 
 VyapaarSaathi AI is a modern, AI-powered business intelligence platform designed for merchants and small businesses to monitor performance, analyze trends, and receive actionable insights in real time.  
@@ -56,52 +56,104 @@ Built with a clean dual-architecture system, it combines a high-performance Reac
 
 ~~~text
 VyapaarSaathi-AI/
-|-- .gitignore
-|-- README.md
-|-- backend/
-|   |-- app.py
-|   |-- README.md
-|   |-- requirements.txt
-|   `-- __pycache__/                    (runtime generated)
-`-- frontend/
-    |-- eslint.config.js
-    |-- index.html
-    |-- package-lock.json
-    |-- package.json
-    |-- vite.config.js
-    |-- public/
-    |   |-- favicon.svg
-    |   `-- icons.svg
-    `-- src/
-        |-- App.css
-        |-- App.jsx
-        |-- index.css
-        |-- main.jsx
-        |-- assets/
-        |   |-- hero.png
-        |   |-- react.svg
-        |   `-- vite.svg
-        |-- components/
-        |   |-- AISummaryCharts.jsx
-        |   |-- AISummaryHealthCards.jsx
-        |   |-- AISummaryPanel.jsx
-        |   |-- DashboardMetrics.jsx
-        |   |-- Navbar.jsx
-        |   |-- PremiumLoader.jsx
-        |   |-- ReportsTable.jsx
-        |   `-- WeeklySalesChart.jsx
-        |-- data/
-        |   |-- merchantData.js
-        |   `-- merchantData.json
-        |-- pages/
-        |   |-- AISummaryPage.jsx
-        |   |-- Dashboard.jsx
-        |   |-- InsightsPage.jsx
-        |   |-- LandingPage.jsx
-        |   `-- RecommendationsPage.jsx
-        `-- utils/
-            |-- dashboardUtils.js
-            `-- insightUtils.js
+├── .git/
+├── .gitignore
+├── README.md
+├── backend/
+│   ├── .env
+│   ├── .env.example
+│   ├── app.py
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── README.md
+│   ├── requirements.txt
+│   ├── server.js
+│   ├── __pycache__/
+│   ├── node_modules/
+│   └── src/
+│       ├── app.js
+│       ├── config/
+│       │   ├── constants.js
+│       │   ├── cors.js
+│       │   └── env.js
+│       ├── controllers/
+│       │   ├── ai.controller.js
+│       │   ├── auth.controller.js
+│       │   ├── health.controller.js
+│       │   ├── payment.controller.js
+│       │   ├── upload.controller.js
+│       │   └── voice.controller.js
+│       ├── middlewares/
+│       │   ├── error.middleware.js
+│       │   ├── rateLimit.middleware.js
+│       │   └── validate.middleware.js
+│       ├── routes/
+│       │   ├── ai.routes.js
+│       │   ├── auth.routes.js
+│       │   ├── health.routes.js
+│       │   ├── payment.routes.js
+│       │   ├── upload.routes.js
+│       │   └── voice.routes.js
+│       ├── services/
+│       │   ├── ai.service.js
+│       │   ├── auth.service.js
+│       │   ├── csv.service.js
+│       │   ├── email.service.js
+│       │   └── voice.service.js
+│       ├── utils/
+│       │   └── response.util.js
+│       └── validators/
+│           ├── ai.validator.js
+│           ├── auth.validator.js
+│           └── payment.validator.js
+└── frontend/
+    ├── eslint.config.js
+    ├── index.html
+    ├── package-lock.json
+    ├── package.json
+    ├── vercel.json
+    ├── vite.config.js
+    ├── node_modules/
+    ├── public/
+    │   ├── apple-touch-icon.png
+    │   ├── favicon.ico
+    │   ├── favicon.svg
+    │   ├── preview-image.png
+    │   ├── robots.txt
+    │   └── sample-transactions.csv
+    └── src/
+        ├── App.css
+        ├── App.jsx
+        ├── index.css
+        ├── main.jsx
+        ├── assets/
+        │   ├── hero.png
+        │   ├── react.svg
+        │   └── vite.svg
+        ├── components/
+        │   ├── AISummaryCharts.jsx
+        │   ├── AISummaryHealthCards.jsx
+        │   ├── AISummaryPanel.jsx
+        │   ├── DashboardMetrics.jsx
+        │   ├── ErrorBoundary.jsx
+        │   ├── Footer.jsx
+        │   ├── Navbar.jsx
+        │   ├── PremiumLoader.jsx
+        │   ├── ReportsTable.jsx
+        │   └── WeeklySalesChart.jsx
+        ├── data/
+        │   ├── merchantData.js
+        │   └── merchantData.json
+        ├── pages/
+        │   ├── AISummaryPage.jsx
+        │   ├── Dashboard.jsx
+        │   ├── InsightsPage.jsx
+        │   ├── LandingPage.jsx
+        │   ├── RecommendationsPage.jsx
+        │   └── TransactionAnalysis.jsx
+        └── utils/
+            ├── dashboardUtils.js
+            └── insightUtils.js
 ~~~
 
 ## How It Works
