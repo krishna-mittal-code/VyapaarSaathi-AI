@@ -24,6 +24,9 @@ const LANGUAGE_CODES = {
   French: "fr-FR",
 };
 
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/$/, "");
+const buildApiUrl = (path) => `${API_BASE}${path}`;
+
 function WaveformBars({ active }) {
   return (
     <div className="flex items-end gap-[3px] h-5">
@@ -45,19 +48,19 @@ function WaveformBars({ active }) {
 // Reverse mapping: speech lang code -> app language name
 const SPEECH_LANG_MAP = {
   "en-US": "English",
-  "en": "English",
+  en: "English",
   "hi-IN": "Hindi",
-  "hi": "Hindi",
+  hi: "Hindi",
   "ta-IN": "Tamil",
-  "ta": "Tamil",
+  ta: "Tamil",
   "bn-IN": "Bengali",
-  "bn": "Bengali",
+  bn: "Bengali",
   "te-IN": "Telugu",
-  "te": "Telugu",
+  te: "Telugu",
   "es-ES": "Spanish",
-  "es": "Spanish",
+  es: "Spanish",
   "fr-FR": "French",
-  "fr": "French",
+  fr: "French",
 };
 
 function AISummaryPage() {
@@ -223,11 +226,10 @@ function AISummaryPage() {
       categoryRevenue[cat] = (categoryRevenue[cat] || 0) + t.amount;
     });
 
-    const topCategory =
-      Object.keys(categoryRevenue).reduce(
-        (a, b) => (categoryRevenue[a] > categoryRevenue[b] ? a : b),
-        Object.keys(categoryRevenue)[0] || "General"
-      );
+    const topCategory = Object.keys(categoryRevenue).reduce(
+      (a, b) => (categoryRevenue[a] > categoryRevenue[b] ? a : b),
+      Object.keys(categoryRevenue)[0] || "General"
+    );
 
     const lowStockCount = inventory.filter((item) => item.stock < item.reorderLevel).length;
 
@@ -312,11 +314,11 @@ function AISummaryPage() {
     setResponse("");
     setLoading(true);
     setLastAsked(prompt);
-    
+
     const langToUse = customLanguage || language;
 
     try {
-      const res = await fetch("/api/ask", {
+      const res = await fetch(buildApiUrl("/api/ask"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ question: prompt, language: langToUse }),
@@ -337,7 +339,7 @@ function AISummaryPage() {
       setError(
         err instanceof Error
           ? `Error: ${err.message}`
-          : "Unable to reach the AI backend. Start the Python server and try again."
+          : "Unable to reach the AI backend. Please check backend URL and server status."
       );
     } finally {
       setLoading(false);
@@ -361,32 +363,26 @@ function AISummaryPage() {
         }
       `}</style>
 
-      {/* Container ab dark mode ready hai */}
       <div className="w-full min-h-full transition-colors duration-300">
-
         <div className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
-          
-          {/* TODAY'S BUSINESS HEALTH STRIP */}
-          <Suspense fallback={<div className="text-center text-sm text-gray-500 dark:text-gray-400 py-8">Loading overview...</div>}>
+          <Suspense
+            fallback={<div className="text-center text-sm text-gray-500 dark:text-gray-400 py-8">Loading overview...</div>}
+          >
             <AISummaryHealthCards insightCards={analytics.insightCards} lowStockCount={analytics.lowStockCount} />
           </Suspense>
 
-          {/* CHARTS SECTION */}
-          <Suspense fallback={<div className="text-center text-sm text-gray-500 dark:text-gray-400 py-8">Loading charts...</div>}>
+          <Suspense
+            fallback={<div className="text-center text-sm text-gray-500 dark:text-gray-400 py-8">Loading charts...</div>}
+          >
             <AISummaryCharts dailySales={analytics.dailySales} categoryChartData={analytics.categoryChartData} />
           </Suspense>
 
-          {/* MAIN CONTENT */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
-            
-            {/* LEFT COLUMN - AI ASSISTANT */}
             <div className="lg:col-span-2 space-y-4">
-              {/* ASK BUSINESS ASSISTANT */}
               <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-4 transition-colors duration-300">
                 <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Ask About Your Business</h2>
 
                 <div className="space-y-3">
-                  {/* Input Row */}
                   <div className="flex flex-col sm:flex-row gap-2">
                     <input
                       type="text"
@@ -424,7 +420,6 @@ function AISummaryPage() {
                     </button>
                   </div>
 
-                  {/* Listening Status */}
                   {listeningStatus && (
                     <div className="flex items-center gap-2 text-xs text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/30 px-3 py-2 rounded-lg">
                       <span className="animate-pulse">●</span>
@@ -432,7 +427,6 @@ function AISummaryPage() {
                     </div>
                   )}
 
-                  {/* Language & Voice Settings */}
                   <div className="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
                     <select
                       value={language}
@@ -466,7 +460,6 @@ function AISummaryPage() {
                 </div>
               </div>
 
-              {/* QUICK ACTION BUTTONS */}
               <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-4 transition-colors duration-300">
                 <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Common Business Questions</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -501,7 +494,6 @@ function AISummaryPage() {
                 </div>
               </div>
 
-              {/* RESPONSE AREA */}
               <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-4 min-h-[280px] transition-colors duration-300">
                 {!response && !loading && (
                   <div className="h-full flex flex-col items-center justify-center text-center py-12">
@@ -515,9 +507,7 @@ function AISummaryPage() {
                   <div className="space-y-3">
                     {lastAsked && (
                       <div className="flex justify-end">
-                        <div className="max-w-xs bg-blue-600 text-white rounded-lg px-3 py-2 text-sm">
-                          {lastAsked}
-                        </div>
+                        <div className="max-w-xs bg-blue-600 text-white rounded-lg px-3 py-2 text-sm">{lastAsked}</div>
                       </div>
                     )}
                     <div className="flex justify-start">
@@ -535,16 +525,12 @@ function AISummaryPage() {
                 {response && !loading && (
                   <div className="space-y-3">
                     <div className="flex justify-end">
-                      <div className="max-w-xs bg-blue-600 text-white rounded-lg px-4 py-2 text-sm">
-                        {lastAsked}
-                      </div>
+                      <div className="max-w-xs bg-blue-600 text-white rounded-lg px-4 py-2 text-sm">{lastAsked}</div>
                     </div>
 
                     <div className="flex justify-start">
                       <div className="bg-gray-100 dark:bg-slate-700 rounded-lg px-4 py-3 max-w-lg transition-colors duration-300">
-                        <p className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap">
-                          {response}
-                        </p>
+                        <p className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap">{response}</p>
                       </div>
                     </div>
 
@@ -573,9 +559,7 @@ function AISummaryPage() {
               </div>
             </div>
 
-            {/* RIGHT COLUMN - STORE STATUS */}
             <div className="space-y-4">
-              {/* STORE STATUS */}
               <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-4 transition-colors duration-300">
                 <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Store Status</h3>
                 <div className="space-y-2">
@@ -603,7 +587,6 @@ function AISummaryPage() {
                 </div>
               </div>
 
-              {/* ALERTS & ACTIONS */}
               {analytics.lowStockCount > 0 && (
                 <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg shadow-sm border border-yellow-200 dark:border-yellow-800 p-4 transition-colors duration-300">
                   <h4 className="text-sm font-semibold text-yellow-900 dark:text-yellow-400 mb-2">⚠️ Action Needed</h4>
@@ -620,7 +603,6 @@ function AISummaryPage() {
                 </div>
               )}
 
-              {/* ABOUT AI */}
               <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg shadow-sm border border-blue-200 dark:border-blue-800 p-4 transition-colors duration-300">
                 <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-400 mb-2">💡 About AI Assistant</h4>
                 <p className="text-xs text-blue-800 dark:text-blue-300 leading-relaxed">
@@ -628,7 +610,6 @@ function AISummaryPage() {
                 </p>
               </div>
             </div>
-            
           </div>
         </div>
       </div>
