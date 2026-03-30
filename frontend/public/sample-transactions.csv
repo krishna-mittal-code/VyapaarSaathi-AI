@@ -1,0 +1,16 @@
+date,customer,amount,category,payment_method,city
+2026-03-01,Ravi,500,Grocery,UPI,Jaipur
+2026-03-02,Neha,1200,Electronics,Card,Delhi
+2026-03-03,Aman,250,Food,Cash,Indore
+2026-03-04,Priya,3200,Electronics,UPI,Mumbai
+2026-03-05,Karan,1500,Fashion,Card,Pune
+2026-03-06,Simran,700,Grocery,UPI,Chandigarh
+2026-03-07,Rohit,5200,Appliances,Card,Bengaluru
+2026-03-08,Anjali,50,Food,Cash,Lucknow
+2026-03-09,Vikas,980,Fashion,UPI,Surat
+2026-03-10,Pooja,430,Grocery,Cash,Bhopal
+2026-03-11,Arjun,870,Pharmacy,UPI,Nagpur
+2026-03-12,Meera,2100,Electronics,Card,Hyderabad
+2026-03-13,Sachin,640,Food,Cash,Patna
+2026-03-14,Nisha,3000,Furniture,Card,Noida
+2026-03-15,Deepak,1250,Fashion,UPI,Kolkata
