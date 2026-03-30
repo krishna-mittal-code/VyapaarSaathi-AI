@@ -1,7 +1,7 @@
 # 🚀 VyapaarSaathi AI – Intelligent Business Intelligence Platform
 
 [![Frontend](https://img.shields.io/badge/Frontend-Live-blue?style=flat-square&logo=vercel)](https://vyapaar-saathi-ai.vercel.app)
-[![Backend](https://img.shields.io/badge/Backend-API-green?style=flat-square&logo=fastapi)](http://localhost:8000/health)
+[![Backend](https://img.shields.io/badge/Backend-API-green?style=flat-square&logo=fastapi)](http://vyapaar-saathi-ai.vercel.app/health)
 [![License](https://img.shields.io/badge/License-Internal-lightgrey?style=flat-square)](#)
 
 VyapaarSaathi AI is a modern, AI-powered business intelligence platform designed for merchants and small businesses to monitor performance, analyze trends, and receive actionable insights in real time.  
