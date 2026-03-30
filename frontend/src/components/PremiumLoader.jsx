@@ -1,87 +1,52 @@
+import React from "react";
+
+// Shared blue spinner SVG to keep the code clean
+const Spinner = ({ className }) => (
+  <svg
+    className={`animate-spin text-blue-600 dark:text-blue-500 ${className}`}
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+  >
+    <circle
+      className="opacity-25"
+      cx="12"
+      cy="12"
+      r="10"
+      stroke="currentColor"
+      strokeWidth="4"
+    ></circle>
+    <path
+      className="opacity-75"
+      fill="currentColor"
+      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+    ></path>
+  </svg>
+);
+
 export function PremiumPageLoader() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center px-6">
-      <div className="relative w-full max-w-md">
-        {/* Soft glow background */}
-        <div className="absolute inset-0 bg-blue-200/20 blur-3xl rounded-full scale-125"></div>
-
-        {/* Main card */}
-        <div className="relative bg-white/80 backdrop-blur-xl border border-white/60 shadow-2xl rounded-3xl p-10 text-center overflow-hidden">
-          {/* Top shimmer line */}
-          <div className="absolute top-0 left-0 h-[3px] w-full bg-gradient-to-r from-transparent via-blue-500 to-transparent animate-shimmer"></div>
-
-          {/* Logo / brand circle */}
-          <div className="mx-auto mb-6 h-16 w-16 rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 shadow-lg flex items-center justify-center animate-float">
-            <span className="text-white text-2xl font-bold">V</span>
-          </div>
-
-          {/* Title */}
-          <h2 className="text-2xl font-semibold text-slate-900 tracking-tight">
-            VyapaarSathi AI
-          </h2>
-
-          <p className="mt-2 text-sm text-slate-500">
-            Preparing your intelligent business workspace...
-          </p>
-
-          {/* Elegant loading dots */}
-          <div className="mt-8 flex items-center justify-center gap-2">
-            <span className="h-2.5 w-2.5 rounded-full bg-blue-600 animate-dot1"></span>
-            <span className="h-2.5 w-2.5 rounded-full bg-blue-500 animate-dot2"></span>
-            <span className="h-2.5 w-2.5 rounded-full bg-indigo-500 animate-dot3"></span>
-          </div>
-
-          {/* Bottom subtle status */}
-          <div className="mt-8">
-            <div className="h-2 w-full rounded-full bg-slate-100 overflow-hidden">
-              <div className="h-full w-1/2 rounded-full bg-gradient-to-r from-blue-500 via-indigo-500 to-blue-500 animate-loaderbar"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div className="w-full flex-grow flex flex-col items-center justify-center min-h-[50vh]">
+      <Spinner className="h-10 w-10 mb-4" />
+      <p className="text-sm font-medium text-gray-500 dark:text-gray-400">
+        Loading...
+      </p>
     </div>
   );
 }
 
 export function PremiumSectionLoader() {
   return (
-    <div className="relative bg-white/80 backdrop-blur-sm rounded-3xl border border-slate-200 shadow-lg p-8 overflow-hidden">
-      {/* shimmer top line */}
-      <div className="absolute top-0 left-0 h-[2px] w-full bg-gradient-to-r from-transparent via-blue-500 to-transparent animate-shimmer"></div>
-
-      <div className="flex items-center justify-between mb-6">
-        <div>
-          <div className="h-5 w-40 rounded-md bg-slate-200 animate-pulse mb-3"></div>
-          <div className="h-4 w-28 rounded-md bg-slate-100 animate-pulse"></div>
-        </div>
-
-        <div className="flex gap-2">
-          <span className="h-2.5 w-2.5 rounded-full bg-blue-600 animate-dot1"></span>
-          <span className="h-2.5 w-2.5 rounded-full bg-blue-500 animate-dot2"></span>
-          <span className="h-2.5 w-2.5 rounded-full bg-indigo-500 animate-dot3"></span>
-        </div>
-      </div>
-
-      {/* chart skeleton */}
-      <div className="space-y-4">
-        <div className="h-56 rounded-2xl bg-gradient-to-br from-slate-100 to-slate-50 animate-pulse"></div>
-
-        <div className="grid grid-cols-3 gap-4">
-          <div className="h-16 rounded-xl bg-slate-100 animate-pulse"></div>
-          <div className="h-16 rounded-xl bg-slate-100 animate-pulse"></div>
-          <div className="h-16 rounded-xl bg-slate-100 animate-pulse"></div>
-        </div>
-      </div>
+    <div className="w-full h-48 flex items-center justify-center bg-white/50 dark:bg-slate-800/50 rounded-2xl border border-gray-100 dark:border-slate-700 transition-colors duration-300">
+      <Spinner className="h-8 w-8" />
     </div>
   );
 }
 
 export function PremiumInlineLoader() {
   return (
-    <div className="inline-flex items-center gap-2 text-sm text-slate-500">
-      <span className="h-2 w-2 rounded-full bg-blue-600 animate-dot1"></span>
-      <span className="h-2 w-2 rounded-full bg-blue-500 animate-dot2"></span>
-      <span className="h-2 w-2 rounded-full bg-indigo-500 animate-dot3"></span>
+    <div className="inline-flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+      <Spinner className="h-4 w-4" />
       <span>Loading...</span>
     </div>
   );

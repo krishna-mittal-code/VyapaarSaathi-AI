@@ -1,0 +1,29 @@
+# ==========================================
+# VyapaarSathi AI - Crawler & Bot Policy
+# ==========================================
+
+# Allow all standard search engine bots (Google, Bing, etc.)
+User-agent: *
+Allow: /
+
+# Explicitly allow AI bots to read and understand the website content
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Anthropic-ai
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: OmgiliBot
+Allow: /
+
+# Sitemap Location (future sitemap)
+Sitemap: https://vyapaar-saathi-ai.vercel.app/sitemap.xml

@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect, useMemo, Suspense, lazy } from "react";
-import Navbar from "../components/Navbar";
 import merchantData from "../data/merchantData.json";
 
 const AISummaryCharts = lazy(() => import("../components/AISummaryCharts"));
@@ -149,7 +148,6 @@ function AISummaryPage() {
   }, []);
 
   const detectLanguage = (transcript, langFromAPI) => {
-    // First try API's detected language
     if (langFromAPI) {
       const fullLang = langFromAPI;
       const shortLang = fullLang.split("-")[0];
@@ -158,7 +156,6 @@ function AISummaryPage() {
       if (SPEECH_LANG_MAP[shortLang]) return SPEECH_LANG_MAP[shortLang];
     }
 
-    // Fallback: simple keyword detection
     const text = transcript.toLowerCase();
     if (/नमस्ते|आप|क्या|कैसे/.test(text)) return "Hindi";
     if (/வணக்கம்|உங்கள்|என்ன/.test(text)) return "Tamil";
@@ -167,7 +164,7 @@ function AISummaryPage() {
     if (/hola|cómo|está/.test(text)) return "Spanish";
     if (/bonjour|comment|etes/.test(text)) return "French";
 
-    return "English"; // Default
+    return "English";
   };
 
   const toggleMic = () => {
@@ -364,28 +361,29 @@ function AISummaryPage() {
         }
       `}</style>
 
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
+      {/* Container ab dark mode ready hai */}
+      <div className="w-full min-h-full transition-colors duration-300">
 
         <div className="max-w-6xl mx-auto px-3 sm:px-4 py-4 sm:py-6">
           
-          {/* TODAY'S BUSINESS HEALTH STRIP (lazy loaded) */}
-          <Suspense fallback={<div className="text-center text-sm text-gray-500 py-8">Loading overview...</div>}>
+          {/* TODAY'S BUSINESS HEALTH STRIP */}
+          <Suspense fallback={<div className="text-center text-sm text-gray-500 dark:text-gray-400 py-8">Loading overview...</div>}>
             <AISummaryHealthCards insightCards={analytics.insightCards} lowStockCount={analytics.lowStockCount} />
           </Suspense>
 
-          {/* CHARTS SECTION (lazy loaded) */}
-          <Suspense fallback={<div className="text-center text-sm text-gray-500 py-8">Loading charts...</div>}>
+          {/* CHARTS SECTION */}
+          <Suspense fallback={<div className="text-center text-sm text-gray-500 dark:text-gray-400 py-8">Loading charts...</div>}>
             <AISummaryCharts dailySales={analytics.dailySales} categoryChartData={analytics.categoryChartData} />
           </Suspense>
 
           {/* MAIN CONTENT */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            
             {/* LEFT COLUMN - AI ASSISTANT */}
             <div className="lg:col-span-2 space-y-4">
               {/* ASK BUSINESS ASSISTANT */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-                <h2 className="text-sm font-semibold text-gray-900 mb-3">Ask About Your Business</h2>
+              <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-4 transition-colors duration-300">
+                <h2 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Ask About Your Business</h2>
 
                 <div className="space-y-3">
                   {/* Input Row */}
@@ -396,7 +394,7 @@ function AISummaryPage() {
                       value={question}
                       onChange={(e) => setQuestion(e.target.value)}
                       onKeyDown={handleKeyDown}
-                      className="flex-1 border border-gray-300 rounded-lg px-4 py-2.5 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 transition bg-white"
+                      className="flex-1 border border-gray-300 dark:border-slate-600 rounded-lg px-4 py-2.5 text-sm outline-none focus:border-blue-400 focus:ring-2 focus:ring-blue-100 dark:focus:ring-blue-900/50 transition bg-white dark:bg-slate-900 text-gray-900 dark:text-white"
                     />
 
                     <button
@@ -405,7 +403,7 @@ function AISummaryPage() {
                       className={`flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-medium text-sm transition whitespace-nowrap ${
                         isRecording
                           ? "bg-red-500 hover:bg-red-600 text-white"
-                          : "bg-gray-200 hover:bg-gray-300 text-gray-900"
+                          : "bg-gray-200 hover:bg-gray-300 dark:bg-slate-700 dark:hover:bg-slate-600 text-gray-900 dark:text-white"
                       }`}
                     >
                       {isRecording ? (
@@ -428,7 +426,7 @@ function AISummaryPage() {
 
                   {/* Listening Status */}
                   {listeningStatus && (
-                    <div className="flex items-center gap-2 text-xs text-blue-700 bg-blue-50 px-3 py-2 rounded-lg">
+                    <div className="flex items-center gap-2 text-xs text-blue-700 dark:text-blue-300 bg-blue-50 dark:bg-blue-900/30 px-3 py-2 rounded-lg">
                       <span className="animate-pulse">●</span>
                       {listeningStatus}
                     </div>
@@ -439,7 +437,7 @@ function AISummaryPage() {
                     <select
                       value={language}
                       onChange={(e) => setLanguage(e.target.value)}
-                      className="border border-gray-300 rounded-lg px-3 py-2 text-xs font-medium text-gray-700 outline-none focus:border-blue-400 bg-white"
+                      className="border border-gray-300 dark:border-slate-600 rounded-lg px-3 py-2 text-xs font-medium text-gray-700 dark:text-gray-200 outline-none focus:border-blue-400 bg-white dark:bg-slate-900"
                     >
                       {LANGUAGES.map((l) => (
                         <option key={l}>{l}</option>
@@ -450,18 +448,18 @@ function AISummaryPage() {
                       onClick={() => setSpeakEnabled((v) => !v)}
                       className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition ${
                         speakEnabled
-                          ? "bg-blue-50 text-blue-700 border border-blue-200"
-                          : "bg-gray-100 text-gray-600 border border-gray-300"
+                          ? "bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 border border-blue-200 dark:border-blue-800"
+                          : "bg-gray-100 dark:bg-slate-700 text-gray-600 dark:text-gray-300 border border-gray-300 dark:border-slate-600"
                       }`}
                     >
                       🔊 {speakEnabled ? "On" : "Off"}
                     </button>
 
-                    <span className="text-xs text-gray-500 py-2">AI responds in {language}</span>
+                    <span className="text-xs text-gray-500 dark:text-gray-400 py-2">AI responds in {language}</span>
                   </div>
 
                   {error && (
-                    <p className="text-red-600 text-xs bg-red-50 rounded-lg px-3 py-2 border border-red-200">
+                    <p className="text-red-600 dark:text-red-400 text-xs bg-red-50 dark:bg-red-900/20 rounded-lg px-3 py-2 border border-red-200 dark:border-red-800">
                       {error}
                     </p>
                   )}
@@ -469,34 +467,34 @@ function AISummaryPage() {
               </div>
 
               {/* QUICK ACTION BUTTONS */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-                <h3 className="text-sm font-semibold text-gray-900 mb-3">Common Business Questions</h3>
+              <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-4 transition-colors duration-300">
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Common Business Questions</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                   <button
                     onClick={() => handleAsk("Why are my sales low today?")}
                     disabled={loading}
-                    className="text-left text-xs bg-gray-50 hover:bg-blue-50 text-gray-700 px-3 py-2.5 rounded-lg transition disabled:opacity-50 border border-gray-200 font-medium"
+                    className="text-left text-xs bg-gray-50 dark:bg-slate-700/50 hover:bg-blue-50 dark:hover:bg-slate-700 text-gray-700 dark:text-gray-200 px-3 py-2.5 rounded-lg transition disabled:opacity-50 border border-gray-200 dark:border-slate-600 font-medium"
                   >
                     📉 Why are sales low?
                   </button>
                   <button
                     onClick={() => handleAsk("What items should I restock?")}
                     disabled={loading}
-                    className="text-left text-xs bg-gray-50 hover:bg-blue-50 text-gray-700 px-3 py-2.5 rounded-lg transition disabled:opacity-50 border border-gray-200 font-medium"
+                    className="text-left text-xs bg-gray-50 dark:bg-slate-700/50 hover:bg-blue-50 dark:hover:bg-slate-700 text-gray-700 dark:text-gray-200 px-3 py-2.5 rounded-lg transition disabled:opacity-50 border border-gray-200 dark:border-slate-600 font-medium"
                   >
                     📦 What to restock?
                   </button>
                   <button
                     onClick={() => handleAsk("When is my peak business time?")}
                     disabled={loading}
-                    className="text-left text-xs bg-gray-50 hover:bg-blue-50 text-gray-700 px-3 py-2.5 rounded-lg transition disabled:opacity-50 border border-gray-200 font-medium"
+                    className="text-left text-xs bg-gray-50 dark:bg-slate-700/50 hover:bg-blue-50 dark:hover:bg-slate-700 text-gray-700 dark:text-gray-200 px-3 py-2.5 rounded-lg transition disabled:opacity-50 border border-gray-200 dark:border-slate-600 font-medium"
                   >
                     ⏰ Peak time?
                   </button>
                   <button
                     onClick={() => handleAsk("How many repeat customers do I have?")}
                     disabled={loading}
-                    className="text-left text-xs bg-gray-50 hover:bg-blue-50 text-gray-700 px-3 py-2.5 rounded-lg transition disabled:opacity-50 border border-gray-200 font-medium"
+                    className="text-left text-xs bg-gray-50 dark:bg-slate-700/50 hover:bg-blue-50 dark:hover:bg-slate-700 text-gray-700 dark:text-gray-200 px-3 py-2.5 rounded-lg transition disabled:opacity-50 border border-gray-200 dark:border-slate-600 font-medium"
                   >
                     🔁 Repeat customers?
                   </button>
@@ -504,12 +502,12 @@ function AISummaryPage() {
               </div>
 
               {/* RESPONSE AREA */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 min-h-[280px]">
+              <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-4 min-h-[280px] transition-colors duration-300">
                 {!response && !loading && (
                   <div className="h-full flex flex-col items-center justify-center text-center py-12">
                     <div className="text-3xl mb-2">💬</div>
-                    <p className="text-sm font-medium text-gray-600">No response yet</p>
-                    <p className="text-xs text-gray-500 mt-1">Ask a question to get insights</p>
+                    <p className="text-sm font-medium text-gray-600 dark:text-gray-300">No response yet</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">Ask a question to get insights</p>
                   </div>
                 )}
 
@@ -523,11 +521,11 @@ function AISummaryPage() {
                       </div>
                     )}
                     <div className="flex justify-start">
-                      <div className="bg-gray-100 rounded-lg px-3 py-3">
+                      <div className="bg-gray-100 dark:bg-slate-700 rounded-lg px-3 py-3">
                         <div className="space-y-2 animate-pulse">
-                          <div className="h-3 bg-gray-300 rounded w-48" />
-                          <div className="h-3 bg-gray-300 rounded w-56" />
-                          <div className="h-3 bg-gray-300 rounded w-40" />
+                          <div className="h-3 bg-gray-300 dark:bg-slate-600 rounded w-48" />
+                          <div className="h-3 bg-gray-300 dark:bg-slate-600 rounded w-56" />
+                          <div className="h-3 bg-gray-300 dark:bg-slate-600 rounded w-40" />
                         </div>
                       </div>
                     </div>
@@ -543,8 +541,8 @@ function AISummaryPage() {
                     </div>
 
                     <div className="flex justify-start">
-                      <div className="bg-gray-100 rounded-lg px-4 py-3 max-w-lg">
-                        <p className="text-sm text-gray-800 leading-relaxed whitespace-pre-wrap">
+                      <div className="bg-gray-100 dark:bg-slate-700 rounded-lg px-4 py-3 max-w-lg transition-colors duration-300">
+                        <p className="text-sm text-gray-800 dark:text-gray-200 leading-relaxed whitespace-pre-wrap">
                           {response}
                         </p>
                       </div>
@@ -556,8 +554,8 @@ function AISummaryPage() {
                           onClick={toggleAudio}
                           className={`flex items-center gap-2 text-xs font-medium px-3 py-1.5 rounded-lg border transition ${
                             isPlaying
-                              ? "bg-blue-50 border-blue-300 text-blue-700 hover:bg-blue-100"
-                              : "bg-gray-100 border-gray-300 text-gray-700 hover:bg-gray-200"
+                              ? "bg-blue-50 dark:bg-blue-900/30 border-blue-300 dark:border-blue-800 text-blue-700 dark:text-blue-400"
+                              : "bg-gray-100 dark:bg-slate-700 border-gray-300 dark:border-slate-600 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-slate-600"
                           }`}
                         >
                           {isPlaying ? (
@@ -578,28 +576,28 @@ function AISummaryPage() {
             {/* RIGHT COLUMN - STORE STATUS */}
             <div className="space-y-4">
               {/* STORE STATUS */}
-              <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-                <h3 className="text-sm font-semibold text-gray-900 mb-3">Store Status</h3>
+              <div className="bg-white dark:bg-slate-800 rounded-lg shadow-sm border border-gray-200 dark:border-slate-700 p-4 transition-colors duration-300">
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-3">Store Status</h3>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2 text-sm">
                     <span className="text-lg">🏪</span>
                     <div className="flex-1">
-                      <p className="text-xs text-gray-500">Store Name</p>
-                      <p className="font-semibold text-gray-900 text-sm">{analytics.merchantInfo.name || "Your Store"}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Store Name</p>
+                      <p className="font-semibold text-gray-900 dark:text-white text-sm">{analytics.merchantInfo.name || "Your Store"}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <span className="text-lg">📍</span>
                     <div className="flex-1">
-                      <p className="text-xs text-gray-500">Location</p>
-                      <p className="font-semibold text-gray-900 text-sm">{analytics.merchantInfo.location || "Not set"}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Location</p>
+                      <p className="font-semibold text-gray-900 dark:text-white text-sm">{analytics.merchantInfo.location || "Not set"}</p>
                     </div>
                   </div>
                   <div className="flex items-center gap-2 text-sm">
                     <span className="text-lg">📦</span>
                     <div className="flex-1">
-                      <p className="text-xs text-gray-500">Top Category</p>
-                      <p className="font-semibold text-gray-900 text-sm">{analytics.insightCards[2].value}</p>
+                      <p className="text-xs text-gray-500 dark:text-gray-400">Top Category</p>
+                      <p className="font-semibold text-gray-900 dark:text-white text-sm">{analytics.insightCards[2].value}</p>
                     </div>
                   </div>
                 </div>
@@ -607,9 +605,9 @@ function AISummaryPage() {
 
               {/* ALERTS & ACTIONS */}
               {analytics.lowStockCount > 0 && (
-                <div className="bg-yellow-50 rounded-lg shadow-sm border border-yellow-200 p-4">
-                  <h4 className="text-sm font-semibold text-yellow-900 mb-2">⚠️ Action Needed</h4>
-                  <p className="text-xs text-yellow-800 mb-3">
+                <div className="bg-yellow-50 dark:bg-yellow-900/20 rounded-lg shadow-sm border border-yellow-200 dark:border-yellow-800 p-4 transition-colors duration-300">
+                  <h4 className="text-sm font-semibold text-yellow-900 dark:text-yellow-400 mb-2">⚠️ Action Needed</h4>
+                  <p className="text-xs text-yellow-800 dark:text-yellow-500 mb-3">
                     {analytics.lowStockCount} item{analytics.lowStockCount !== 1 ? "s" : ""} running low on stock.
                   </p>
                   <button
@@ -623,13 +621,14 @@ function AISummaryPage() {
               )}
 
               {/* ABOUT AI */}
-              <div className="bg-blue-50 rounded-lg shadow-sm border border-blue-200 p-4">
-                <h4 className="text-sm font-semibold text-blue-900 mb-2">💡 About AI Assistant</h4>
-                <p className="text-xs text-blue-800 leading-relaxed">
+              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg shadow-sm border border-blue-200 dark:border-blue-800 p-4 transition-colors duration-300">
+                <h4 className="text-sm font-semibold text-blue-900 dark:text-blue-400 mb-2">💡 About AI Assistant</h4>
+                <p className="text-xs text-blue-800 dark:text-blue-300 leading-relaxed">
                   Your personal business advisor. Ask about sales, inventory, customers, and trends. Works in {LANGUAGES.length} languages.
                 </p>
               </div>
             </div>
+            
           </div>
         </div>
       </div>
