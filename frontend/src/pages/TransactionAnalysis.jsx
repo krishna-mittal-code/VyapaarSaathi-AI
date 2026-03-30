@@ -1,5 +1,8 @@
 import React, { useMemo, useState } from "react";
 
+const API_BASE = (import.meta.env.VITE_API_BASE_URL || "").replace(/\/$/, "");
+const buildApiUrl = (path) => `${API_BASE}${path}`;
+
 const hasValue = (v) => v !== undefined && v !== null && v !== "";
 const toFiniteNumber = (v) => {
   const n = Number(v);
@@ -65,7 +68,7 @@ const TransactionAnalysis = () => {
     formData.append("file", file);
 
     try {
-      const response = await fetch("/api/upload-csv", {
+      const response = await fetch(buildApiUrl("/api/upload-csv"), {
         method: "POST",
         body: formData,
       });
