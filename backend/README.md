@@ -18,6 +18,12 @@ This backend serves a multilingual AI endpoint for the React frontend.
    uvicorn app:app --reload --host 0.0.0.0 --port 8000
    ```
 
+The backend uses Gemini via `GEMINI_API_KEY` for AI inference.
+
+```bash
+export GEMINI_API_KEY="your_api_key"
+```
+
 ## Endpoint
 
 - `POST /api/ask`
